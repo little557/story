@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>等門開的時候</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        html, body {
+            position: relative; height: 100%; margin: 0; padding: 0;
+            background-color: rgb(237, 227, 211); overflow: hidden;
+        }
+
+        .swiper { width: 100%; height: 100%; }
+
+        /* 每一組畫面的基本設定 */
+        .swiper-slide {
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        /* 📖 左右跨頁的大外框 */
+        .book-spread {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06); 
+        }
+
+        /* 圖片大小控制 */
+        .book-spread img, .swiper-slide > img {
+            max-height: 83vh;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* 📐 【究極核心】DearFlip 級別擬真立體書脊 (適用於一般明亮、暖色頁面) */
+        .book-spine {
+            width: 16px;            
+            height: 83vh;          
+            position: relative;
+            z-index: 5;
+            flex-shrink: 0;
+            margin: 0 -8px;        
+            
+            background: linear-gradient(to right, 
+                rgba(255, 255, 255, 0.35) 0%, 
+                rgba(0, 0, 0, 0.04) 35%, 
+                rgba(0, 0, 0, 0.18) 48%, 
+                rgba(0, 0, 0, 0.22) 50%, 
+                rgba(0, 0, 0, 0.15) 52%, 
+                rgba(0, 0, 0, 0.03) 65%, 
+                rgba(255, 255, 255, 0.35) 100%
+            );
+            
+            box-shadow: 
+                inset -3px 0 5px rgba(0,0,0,0.02),
+                inset 3px 0 5px rgba(0,0,0,0.02);
+        }
+
+        /* 🌙 【暗色專屬】全黑/暗色頁面專用書脊（拿掉白色反光，完美隱形） */
+        .book-spine.dark-spine {
+            background: linear-gradient(to right, 
+                rgba(0, 0, 0, 0.0) 0%, 
+                rgba(0, 0, 0, 0.2) 35%, 
+                rgba(0, 0, 0, 0.5) 48%, 
+                rgba(0, 0, 0, 0.6) 50%, 
+                rgba(0, 0, 0, 0.5) 52%, 
+                rgba(0, 0, 0, 0.2) 65%, 
+                rgba(0, 0, 0, 0.0) 100%
+            );
+            box-shadow: none;
+        }
+
+        /* 🎯 點擊框的基本樣式 */
+        .game-link {
+            position: absolute;
+            z-index: 999;
+            cursor: pointer;
+            /* 🛠️ 測試用半透明紅框，位置對齊後，直接把下面這兩行刪掉就會變隱形 */
+            
+        }
+
+        /* 🕹️ 第一個遊戲 (第 17 頁在右邊) */
+        .game1-pos {
+            bottom: 10%;       
+            right: 4%; 
+            width: 60px; 
+            height: 95px;
+        }
+
+        /* 🕹️ 第二個遊戲 (第 23 頁在右邊) */
+        .game2-pos {
+            bottom: 22%;       
+            right: 5%; 
+            width: 165px; 
+            height: 120px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            
+            <div class="swiper-slide">
+                <img src="img/1.jpg" alt="封面">
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/2.jpg"><div class="book-spine"></div><img src="img/3.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/4.jpg"><div class="book-spine"></div><img src="img/5.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/6.jpg"><div class="book-spine"></div><img src="img/7.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread">
+                    <img src="img/8.jpg">
+                    <div class="book-spine dark-spine"></div> 
+                    <img src="img/9.jpg">
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/10.jpg"><div class="book-spine"></div><img src="img/11.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/12.jpg"><div class="book-spine"></div><img src="img/13.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/14.jpg"><div class="book-spine"></div><img src="img/15.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread">
+                    <img src="img/16.jpg">
+                    <div class="book-spine"></div>
+                    <img src="img/17.jpg">
+                    <a class="game-link game1-pos" onclick="openGameWindow('https://little557.github.io/story-game/')"></a>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/18.jpg"><div class="book-spine"></div><img src="img/19.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/20.jpg"><div class="book-spine"></div><img src="img/21.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread">
+                    <img src="img/22.jpg">
+                    <div class="book-spine"></div>
+                    <img src="img/23.jpg">
+                    <a class="game-link game2-pos" onclick="openGameWindow('https://little557.github.io/memory-game/')"></a>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/24.jpg"><div class="book-spine"></div><img src="img/25.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/26.jpg"><div class="book-spine"></div><img src="img/27.jpg"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/28.jpg"><div class="book-spine"></div><img src="img/29.jpg"></div>
+            </div>
+            
+            <div class="swiper-slide">
+                <img src="img/30.jpg" alt="封底">
+            </div>
+
+        </div>
+
+        <div class="swiper-button-next" style="color: #8b7d6b;"></div>
+        <div class="swiper-button-prev" style="color: #8b7d6b;"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,       
+            spaceBetween: 0,
+            speed: 1000, 
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            keyboard: true,
+        });
+
+        function openGameWindow(url) {
+            var width = 1024;
+            var height = 768;
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 2;
+            var windowFeatures = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
+            window.open(url, 'GameWindow', windowFeatures);
+        }
+    </script>
+</body>
+</html>
