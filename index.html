@@ -22,20 +22,18 @@
             justify-content: center; 
             align-items: center;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 3vh 2vw;
         }
 
-        /* 📖 響應式左右跨頁大外框 */
+        /* 📖 左右跨頁大外框 */
         .book-spread {
             display: flex;
-            flex-direction: row; /* 強制永遠維持橫向並排，絕不變成上下排 */
+            flex-direction: row;
             align-items: center;
             justify-content: center;
             position: relative;
             max-width: 95vw;
             max-height: 85vh;
-            width: max-content;
-            height: max-content;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             background-color: #fff; 
         }
@@ -48,13 +46,20 @@
             height: auto;
             object-fit: contain;
             display: block;
-            flex-shrink: 1;
         }
 
-        /* 單頁模式（封面、封底） */
+        /* 📦 讓右側有遊戲的頁面變成一個獨立的定位容器 */
+        .page-container {
+            position: relative;
+            display: inline-block;
+            height: max-content;
+            width: max-content;
+        }
+
+        /* 單頁模式（封面、封底）自適應修正，確保橫向縱向都看得見 */
         .single-page-img {
             max-height: 85vh;
-            max-width: 90vw;
+            max-width: 85vw;
             width: auto;
             height: auto;
             object-fit: contain;
@@ -64,9 +69,7 @@
 
         /* 📐 擬真立體書脊 */
         .book-spine {
-            width: 2%;
-            max-width: 16px;
-            min-width: 6px;
+            width: 14px;
             height: 100%;
             position: absolute;
             left: 50%;
@@ -85,56 +88,46 @@
             );
         }
 
-        /* 🎯 點擊框樣式 */
+        /* 🎯 點擊框核心改造：改用相對於「單張圖片內部」的百分比定位 */
         .game-link {
             position: absolute;
             z-index: 999;
             cursor: pointer;
-            /* 🛠️ 如果要調位置，可以取消註解下面兩行著色測試 */
-            /* background: rgba(255, 0, 0, 0.4); */
-            /* border: 2px solid red; */
+            /* 🛠️ 自動開啟紅框著色測試，調整好之後你可以把下面兩行刪掉或註解 */
+            background: rgba(255, 0, 0, 0.4); 
+            border: 2px solid red;
         }
 
-        /* 🕹️ 第一個遊戲定位 (第 17 頁右側) */
+        /* 🕹️ 第一個遊戲定位 (死死綁在第 17 頁的糖果罐右下方) */
         .game1-pos {
-            bottom: 10%;       
-            right: 4%; 
-            width: 8%; 
-            height: 12%;
-            min-width: 45px;
-        }
-
-        /* 🕹️ 第二個遊戲定位 (第 23 頁右側) */
-        .game2-pos {
-            bottom: 22%;       
-            right: 5%; 
+            bottom: 8%;       
+            right: 8%; 
             width: 18%; 
-            height: 15%;
-            min-width: 90px;
+            height: 30%;
         }
 
-        /* 📱 【核心 RWD 修正】當手機窄螢幕直放時 */
+        /* 🕹️ 第二個遊戲定位 (死死綁在第 23 頁右下) */
+        .game2-pos {
+            bottom: 12%;       
+            right: 8%; 
+            width: 35%; 
+            height: 25%;
+        }
+
+        /* 📱【手機直向優化】*/
         @media (max-width: 767px) and (orientation: portrait) {
-            .swiper-slide {
-                padding: 10px; /* 縮小邊距，把空間留給繪本 */
-            }
             .book-spread {
-                flex-direction: row !important; /* 拒絕變成上下排，維持繪本一體性 */
-                max-width: 96vw !important;     /* 寬度撐滿螢幕左右 */
-                max-height: auto !important;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                max-width: 98vw !important;
+                max-height: 45vh !important;
             }
             .book-page-img {
-                max-width: 48vw !important;    /* 兩頁各佔手機寬度的一半 */
-                max-height: 40vh !important;   /* 高度等比例縮小，防止變形 */
-                height: auto !important;
-                width: auto !important;
+                max-width: 49vw !important;
+                max-height: 45vh !important;
             }
             .single-page-img {
-                max-width: 85vw !important;    /* 封面封底在直向時的比例修正 */
-                max-height: 65vh !important;
+                max-width: 90vw !important;
+                max-height: 70vh !important;
             }
-            /* 在直向安全比例下，點擊框會完美貼合，無需重新寫死px，維持原樣即可 */
         }
 
         /* 翻頁按鈕尺寸自適應 */
@@ -142,7 +135,7 @@
             --swiper-navigation-size: 30px;
         }
         @media (max-width: 480px) {
-            .swiper-button-next, .swiper-button-prev { --swiper-navigation-size: 18px; }
+            .swiper-button-next, .swiper-button-prev { --swiper-navigation-size: 20px; }
         }
     </style>
 </head>
@@ -190,8 +183,10 @@
                 <div class="book-spread">
                     <img src="img/16.jpg" class="book-page-img">
                     <div class="book-spine"></div>
-                    <img src="img/17.jpg" class="book-page-img">
-                    <a class="game-link game1-pos" onclick="openGameWindow('https://little557.github.io/story-game/')"></a>
+                    <div class="page-container">
+                        <img src="img/17.jpg" class="book-page-img">
+                        <a class="game-link game1-pos" onclick="openGameWindow('https://little557.github.io/story-game/')"></a>
+                    </div>
                 </div>
             </div>
 
@@ -207,8 +202,10 @@
                 <div class="book-spread">
                     <img src="img/22.jpg" class="book-page-img">
                     <div class="book-spine"></div>
-                    <img src="img/23.jpg" class="book-page-img">
-                    <a class="game-link game2-pos" onclick="openGameWindow('https://little557.github.io/memory-game/')"></a>
+                    <div class="page-container">
+                        <img src="img/23.jpg" class="book-page-img">
+                        <a class="game-link game2-pos" onclick="openGameWindow('https://little557.github.io/memory-game/')"></a>
+                    </div>
                 </div>
             </div>
 
