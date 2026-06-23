@@ -25,7 +25,7 @@
             padding: 3vh 2vw;
         }
 
-        /* 📖 左右跨頁大外框 */
+        /* 📖 左右跨頁大外框（預設橫向/電腦版） */
         .book-spread {
             display: flex;
             flex-direction: row;
@@ -38,7 +38,7 @@
             background-color: #fff; 
         }
 
-        /* 控制雙頁模式下的單張圖片大小 */
+        /* 控制雙頁模式下的單張圖片大小（預設） */
         .book-page-img {
             max-height: 85vh;
             max-width: 47vw;
@@ -56,7 +56,7 @@
             width: max-content;
         }
 
-        /* 單頁模式（封面、封底）自適應修正，確保橫向縱向都看得見 */
+        /* 單頁模式（封面、封底）自適應修正 */
         .single-page-img {
             max-height: 85vh;
             max-width: 85vw;
@@ -67,7 +67,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        /* 📐 擬真立體書脊 */
+        /* 📐 擬真立體書脊（橫向時顯示） */
         .book-spine {
             width: 14px;
             height: 100%;
@@ -86,27 +86,27 @@
                 rgba(0, 0, 0, 0.03) 65%, 
                 rgba(255, 255, 255, 0.35) 100%
             );
+            display: block;
         }
 
-        /* 🎯 點擊框核心改造：改用相對於「單張圖片內部」的百分比定位 */
+        /* 🎯 點擊框百分比定位，緊緊綁著圖片 */
         .game-link {
             position: absolute;
             z-index: 999;
             cursor: pointer;
-            /* 🛠️ 自動開啟紅框著色測試，調整好之後你可以把下面兩行刪掉或註解 */
             background: rgba(255, 0, 0, 0.4); 
             border: 2px solid red;
         }
 
-        /* 🕹️ 第一個遊戲定位 (死死綁在第 17 頁的糖果罐右下方) */
+        /* 🕹️ 第一個遊戲定位 (糖果罐位置調整) */
         .game1-pos {
             bottom: 8%;       
             right: 7%; 
-            width: 10%; 
+            width: 12%; 
             height: 18%;
         }
 
-        /* 🕹️ 第二個遊戲定位 (死死綁在第 23 頁右下) */
+        /* 🕹️ 第二個遊戲定位 */
         .game2-pos {
             bottom: 20%;       
             right: 10%; 
@@ -114,19 +114,45 @@
             height: 22%;
         }
 
-        /* 📱【手機直向優化】*/
+        /* 📱【關鍵改動：手機直向（Portrait）智慧放大防變小】*/
         @media (max-width: 767px) and (orientation: portrait) {
+            /* 讓 Swiper 允許這頁的內容上下溢出捲動，避免圖片被壓扁 */
+            .swiper-slide {
+                overflow-y: auto !important;
+                display: block !important; /* 取消置中，改由自然流向 */
+                padding: 2vh 4vw;
+            }
+
+            /* 跨頁外框轉向：改成上下垂直排列 */
             .book-spread {
-                max-width: 98vw !important;
-                max-height: 45vh !important;
+                flex-direction: column !important;
+                max-width: 100% !important;
+                max-height: none !important;
+                box-shadow: none !important;
+                background-color: transparent !important;
             }
+
+            /* 圖片單張放大：寬度直接撐滿，長輩才看得清字！ */
             .book-page-img {
-                max-width: 49vw !important;
-                max-height: 45vh !important;
+                max-width: 92vw !important;
+                max-height: none !important;
+                width: 100% !important;
+                height: auto !important;
+                margin-bottom: 15px; /* 兩頁中間留點空隙 */
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+                background-color: #fff;
             }
+
+            /* 直向時隱藏中間的立體書脊（因為已經變成上下排列了） */
+            .book-spine {
+                display: none !important;
+            }
+
+            /* 封面與封底直向時也放大 */
             .single-page-img {
-                max-width: 90vw !important;
-                max-height: 70vh !important;
+                max-width: 92vw !important;
+                max-height: 80vh !important;
+                margin: 0 auto;
             }
         }
 
@@ -149,34 +175,59 @@
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/2.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/3.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/2.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/3.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/4.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/5.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/4.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/5.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/6.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/7.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/6.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/7.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
                 <div class="book-spread">
                     <img src="img/8.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
                     <img src="img/9.jpg" class="book-page-img">
                 </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/10.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/11.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/10.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/11.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/12.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/13.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/12.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/13.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/14.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/15.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/14.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/15.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
@@ -191,11 +242,19 @@
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/18.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/19.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/18.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/19.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/20.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/21.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/20.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/21.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
@@ -210,15 +269,27 @@
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/24.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/25.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/24.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/25.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/26.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/27.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/26.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/27.jpg" class="book-page-img">
+                </div>
             </div>
 
             <div class="swiper-slide">
-                <div class="book-spread"><img src="img/28.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/29.jpg" class="book-page-img"></div>
+                <div class="book-spread">
+                    <img src="img/28.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/29.jpg" class="book-page-img">
+                </div>
             </div>
             
             <div class="swiper-slide">
