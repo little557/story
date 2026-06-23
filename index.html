@@ -16,89 +16,133 @@
 
         .swiper { width: 100%; height: 100%; }
 
+        /* 每一組畫面的基本設定 */
         .swiper-slide {
             display: flex; 
             justify-content: center; 
             align-items: center;
             box-sizing: border-box;
-            position: relative;
-            height: 100%;
+            padding: 20px;
         }
 
-        /* 🖼️ 圖片自適應控制：無論單頁雙頁，都完美置中且不變形 */
-        .swiper-slide img {
-            max-height: 83vh;
+        /* 📖 響應式左右跨頁大外框 */
+        .book-spread {
+            display: flex;
+            flex-direction: row; /* 強制永遠維持橫向並排，絕不變成上下排 */
+            align-items: center;
+            justify-content: center;
+            position: relative;
             max-width: 95vw;
+            max-height: 85vh;
+            width: max-content;
+            height: max-content;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            background-color: #fff; 
+        }
+
+        /* 控制雙頁模式下的單張圖片大小 */
+        .book-page-img {
+            max-height: 85vh;
+            max-width: 47vw;
             width: auto;
             height: auto;
             object-fit: contain;
             display: block;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            flex-shrink: 1;
         }
 
-        /* 📐 擬真立體書脊（僅在雙頁跨頁模式時，透過 JS 顯示在左頁的右邊界） */
-        .page-spine {
-            display: none; /* 預設隱藏，由 JS 在雙頁模式時啟用 */
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 83vh; /* 與圖片等高 */
-            z-index: 5;
-            pointer-events: none;
-            background: linear-gradient(to right, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.02) 20%, rgba(0,0,0,0.15) 80%, rgba(0,0,0,0.22) 100%);
-        }
-        
-        /* 右頁的左邊界陰影 */
-        .swiper-slide:nth-child(even) .page-spine {
-            left: 0;
-            right: auto;
-            background: linear-gradient(to left, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.02) 20%, rgba(0,0,0,0.15) 80%, rgba(0,0,0,0.22) 100%);
-        }
-
-        /* 雙頁模式下啟動書脊 */
-        .mode-double .page-spine {
+        /* 單頁模式（封面、封底） */
+        .single-page-img {
+            max-height: 85vh;
+            max-width: 90vw;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             display: block;
-        }
-        /* 第 8, 9 頁是全黑頁面，徹底隱藏書脊 */
-        .mode-double .swiper-slide:nth-child(8) .page-spine,
-        .mode-double .swiper-slide:nth-child(9) .page-spine {
-            display: none !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        /* 🎯 互動遊戲點擊框（永遠絕對定位在該頁圖片上，比例絕不對歪） */
+        /* 📐 擬真立體書脊 */
+        .book-spine {
+            width: 2%;
+            max-width: 16px;
+            min-width: 6px;
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: 5;
+            pointer-events: none; 
+            background: linear-gradient(to right, 
+                rgba(255, 255, 255, 0.35) 0%, 
+                rgba(0, 0, 0, 0.04) 35%, 
+                rgba(0, 0, 0, 0.18) 48%, 
+                rgba(0, 0, 0, 0.22) 50%, 
+                rgba(0, 0, 0, 0.15) 52%, 
+                rgba(0, 0, 0, 0.03) 65%, 
+                rgba(255, 255, 255, 0.35) 100%
+            );
+        }
+
+        /* 🎯 點擊框樣式 */
         .game-link {
             position: absolute;
             z-index: 999;
             cursor: pointer;
-            /* 🛠️ 測試用半透明紅框，對齊位置後，把下面這兩行刪掉就會變隱形 */
-            background: rgba(255, 0, 0, 0.4);
-            border: 2px solid red;
+            /* 🛠️ 如果要調位置，可以取消註解下面兩行著色測試 */
+            /* background: rgba(255, 0, 0, 0.4); */
+            /* border: 2px solid red; */
         }
 
-        /* 🕹️ 第一個遊戲 (第 17 頁) */
+        /* 🕹️ 第一個遊戲定位 (第 17 頁右側) */
         .game1-pos {
             bottom: 10%;       
-            right: 8%; 
-            width: 15%; 
-            height: 15%;
-            min-width: 55px;
+            right: 4%; 
+            width: 8%; 
+            height: 12%;
+            min-width: 45px;
         }
 
-        /* 🕹️ 第二個遊戲 (第 23 頁) */
+        /* 🕹️ 第二個遊戲定位 (第 23 頁右側) */
         .game2-pos {
             bottom: 22%;       
-            right: 10%; 
-            width: 35%; 
-            height: 18%;
-            min-width: 110px;
+            right: 5%; 
+            width: 18%; 
+            height: 15%;
+            min-width: 90px;
         }
 
-        /* RWD 按鈕大小調適 */
-        .swiper-button-next, .swiper-button-prev { --swiper-navigation-size: 30px; color: #8b7d6b; }
-        @media (max-width: 768px) {
-            .swiper-button-next, .swiper-button-prev { --swiper-navigation-size: 22px; }
+        /* 📱 【核心 RWD 修正】當手機窄螢幕直放時 */
+        @media (max-width: 767px) and (orientation: portrait) {
+            .swiper-slide {
+                padding: 10px; /* 縮小邊距，把空間留給繪本 */
+            }
+            .book-spread {
+                flex-direction: row !important; /* 拒絕變成上下排，維持繪本一體性 */
+                max-width: 96vw !important;     /* 寬度撐滿螢幕左右 */
+                max-height: auto !important;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+            .book-page-img {
+                max-width: 48vw !important;    /* 兩頁各佔手機寬度的一半 */
+                max-height: 40vh !important;   /* 高度等比例縮小，防止變形 */
+                height: auto !important;
+                width: auto !important;
+            }
+            .single-page-img {
+                max-width: 85vw !important;    /* 封面封底在直向時的比例修正 */
+                max-height: 65vh !important;
+            }
+            /* 在直向安全比例下，點擊框會完美貼合，無需重新寫死px，維持原樣即可 */
+        }
+
+        /* 翻頁按鈕尺寸自適應 */
+        .swiper-button-next, .swiper-button-prev {
+            --swiper-navigation-size: 30px;
+        }
+        @media (max-width: 480px) {
+            .swiper-button-next, .swiper-button-prev { --swiper-navigation-size: 18px; }
         }
     </style>
 </head>
@@ -107,125 +151,113 @@
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             
-            <div class="swiper-slide"><img src="img/1.jpg" alt="封面"></div>
-
-            <div class="swiper-slide"><img src="img/2.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/3.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/4.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/5.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/6.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/7.jpg"><div class="page-spine"></div></div>
-
-            <div class="swiper-slide"><img src="img/8.jpg"></div>
-            <div class="swiper-slide"><img src="img/9.jpg"></div>
-
-            <div class="swiper-slide"><img src="img/10.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/11.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/12.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/13.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/14.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/15.jpg"><div class="page-spine"></div></div>
-
-            <div class="swiper-slide"><img src="img/16.jpg"><div class="page-spine"></div></div>
             <div class="swiper-slide">
-                <img src="img/17.jpg">
-                <div class="page-spine"></div>
-                <a class="game-link game1-pos" onclick="openGameWindow('https://little557.github.io/story-game/')"></a>
+                <img src="img/1.jpg" alt="封面" class="single-page-img">
             </div>
 
-            <div class="swiper-slide"><img src="img/18.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/19.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/20.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/21.jpg"><div class="page-spine"></div></div>
-
-            <div class="swiper-slide"><img src="img/22.jpg"><div class="page-spine"></div></div>
             <div class="swiper-slide">
-                <img src="img/23.jpg">
-                <div class="page-spine"></div>
-                <a class="game-link game2-pos" onclick="openGameWindow('https://little557.github.io/memory-game/')"></a>
+                <div class="book-spread"><img src="img/2.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/3.jpg" class="book-page-img"></div>
             </div>
 
-            <div class="swiper-slide"><img src="img/24.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/25.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/26.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/27.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/28.jpg"><div class="page-spine"></div></div>
-            <div class="swiper-slide"><img src="img/29.jpg"><div class="page-spine"></div></div>
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/4.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/5.jpg" class="book-page-img"></div>
+            </div>
 
-            <div class="swiper-slide"><img src="img/30.jpg" alt="封底"></div>
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/6.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/7.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread">
+                    <img src="img/8.jpg" class="book-page-img">
+                    <img src="img/9.jpg" class="book-page-img">
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/10.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/11.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/12.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/13.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/14.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/15.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread">
+                    <img src="img/16.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/17.jpg" class="book-page-img">
+                    <a class="game-link game1-pos" onclick="openGameWindow('https://little557.github.io/story-game/')"></a>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/18.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/19.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/20.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/21.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread">
+                    <img src="img/22.jpg" class="book-page-img">
+                    <div class="book-spine"></div>
+                    <img src="img/23.jpg" class="book-page-img">
+                    <a class="game-link game2-pos" onclick="openGameWindow('https://little557.github.io/memory-game/')"></a>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/24.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/25.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/26.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/27.jpg" class="book-page-img"></div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="book-spread"><img src="img/28.jpg" class="book-page-img"><div class="book-spine"></div><img src="img/29.jpg" class="book-page-img"></div>
+            </div>
+            
+            <div class="swiper-slide">
+                <img src="img/30.jpg" alt="封底" class="single-page-img">
+            </div>
 
         </div>
 
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next" style="color: #8b7d6b;"></div>
+        <div class="swiper-button-prev" style="color: #8b7d6b;"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        var swiper;
-        var swiperElement = document.querySelector('.swiper');
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,       
+            spaceBetween: 0,
+            speed: 1000, 
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            keyboard: true,
+        });
 
-        function initSwiper() {
-            // 偵測是否為手機直向 (螢幕寬度小於 768 且 高度大於寬度)
-            var isPortrait = window.innerWidth < 768 && window.innerHeight > window.innerWidth;
-            
-            if (swiper) {
-                swiper.destroy(true, true); // 銷毀舊設定以利切換
-            }
-
-            if (isPortrait) {
-                // 📱 手機直向：單頁模式（封面、內頁全都是一頁一頁滑，不分組不變形）
-                swiperElement.classList.remove('mode-double');
-                swiper = new Swiper(".mySwiper", {
-                    slidesPerView: 1,
-                    slidesPerGroup: 1,
-                    spaceBetween: 0,
-                    speed: 800,
-                    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-                    keyboard: true,
-                });
-            } else {
-                // 💻 電腦/平板/手機橫向：高擬真跨頁模式
-                swiperElement.classList.add('mode-double');
-                swiper = new Swiper(".mySwiper", {
-                    slidesPerView: 2,   /* 一個畫面顯示 2 頁（左右跨頁） */
-                    slidesPerGroup: 2,  /* 每次翻頁一次翻 2 頁 */
-                    spaceBetween: 0,
-                    speed: 1000,
-                    slidesOffsetBefore: 0,
-                    breakpoints: {
-                        // 讓第 1 頁(封面)和第 30 頁(封底)能夠單頁居中 (利用 Swiper 內建功能)
-                        0: {
-                            // 這裡透過條件讓封面跟封底獨立的邏輯更穩定
-                        }
-                    },
-                    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-                    keyboard: true,
-                });
-                
-                // 修正 Swiper 雙頁流開頭與結尾置中的核心魔法
-                // 由於封面與封底是單頁，我們讓 Swiper 在翻到最前與最後時保持完美的實體書開闔感
-            }
-        }
-
-        // 初始化
-        initSwiper();
-
-        // 當讀者轉動手機（橫變直、直變橫）或縮放視窗時，自動零延遲切換排版
-        window.addEventListener('resize', initSwiper);
-
-        // 🚀 彈出魔法
         function openGameWindow(url) {
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                window.open(url, '_blank'); // 手機平板直接開新分頁
+                window.open(url, '_blank');
             } else {
                 var width = 1024;
                 var height = 768;
                 var left = (screen.width - width) / 2;
                 var top = (screen.height - height) / 2;
                 var windowFeatures = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
-                window.open(url, 'GameWindow', windowFeatures); // 電腦版彈出精緻居中視窗
+                window.open(url, 'GameWindow', windowFeatures);
             }
         }
     </script>
